@@ -3,6 +3,7 @@
 #include <fstream>
 #include <unistd.h>
 #include <iostream>
+#include <vector>
 #include <ctime>
 #include <time.h>
 //#include <cstdio.h>
@@ -17,15 +18,15 @@ int main()
     int i;
     t.setSize(sf::Vector2f(200, 500));
     t.setPosition(500, 100);
-    double val[256];
-    double subbands[bands];
+    std::vector<double> val(256);
+    std::vector<double> subbands(bands);
     std::ifstream input("output/fftWindows");
 //    sf::Color barColor;
     for (i = 0; i < bands; i++) {
         bars[i].setFillColor(sf::Color(n - i * width, 0 + i * width, i*width));
     }
     sf::Music music;
-    if (!music.openFromFile("sounds/file1.wav")) {
+    if (!music.openFromFile("sounds/file3.wav")) {
         return -1;
     }
     music.play();
