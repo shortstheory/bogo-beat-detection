@@ -6,7 +6,7 @@
 #include <ctime>
 #include <time.h>
 //#include <cstdio.h>
-const int bands = 32;
+const int bands = 256;
 const int n = 256;
 const int width = n / bands;
 int main()
@@ -26,9 +26,9 @@ int main()
     }
     sf::Music music;
     if (!music.openFromFile("sounds/file1.wav")) {
-		return -1;
-	}
-	music.play();
+        return -1;
+    }
+    music.play();
     while (window.isOpen()) {
         //while (!input.eof()) {
         std::clock_t start = std::clock();
@@ -36,7 +36,7 @@ int main()
         for (i = 0; i < n && !input.eof(); i++) {
             input >> a >> b;
 
-			input >> val[i];
+            input >> val[i];
             //input.flush();
         }
         std::cout << a << std::endl;
@@ -58,10 +58,10 @@ int main()
          }
          while (std::clock() - start < 0.021 * 1000000)
          {}
-	   // window.draw(t);
+             // window.draw(t);
         window.display();
             //usleep(0.02322*1000000);
-		//}
+//}
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
