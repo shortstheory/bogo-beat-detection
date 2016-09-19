@@ -29,8 +29,8 @@ int main()
     double outputSubbands[n/2][32];
     double meanSubbands[32];
 
-    std::ifstream input("values");
-    std::ofstream output("fftWindows");
+    std::ifstream input("output/values");
+    std::ofstream output("output/fftWindows");
 
     int i;
     int j;

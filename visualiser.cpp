@@ -19,13 +19,13 @@ int main()
     t.setPosition(500, 100);
     double val[256];
     double subbands[bands];
-    std::ifstream input("fftWindows");
+    std::ifstream input("output/fftWindows");
 //    sf::Color barColor;
     for (i = 0; i < bands; i++) {
         bars[i].setFillColor(sf::Color(n - i * width, 0 + i * width, i*width));
     }
     sf::Music music;
-    if (!music.openFromFile("file1.wav")) {
+    if (!music.openFromFile("sounds/file1.wav")) {
 		return -1;
 	}
 	music.play();
@@ -35,7 +35,7 @@ int main()
         double a, b;
         for (i = 0; i < n && !input.eof(); i++) {
             input >> a >> b;
-     
+
 			input >> val[i];
             //input.flush();
         }

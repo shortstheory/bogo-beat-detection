@@ -39,7 +39,7 @@ def pcm_channels(wave_file):
 
     return channels, sample_rate
 
-xval = pcm_channels('file1.wav')
+xval = pcm_channels('sounds/file1.wav')
 a = len(xval)
 i = 0
 while i < len(xval[0][0]):
