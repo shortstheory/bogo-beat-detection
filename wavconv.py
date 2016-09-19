@@ -42,6 +42,8 @@ def pcm_channels(wave_file):
 xval = pcm_channels('sounds/file3.wav')
 a = len(xval)
 i = 0
+f = open('output/values', 'w')
 while i < len(xval[0][0]):
     print str(xval[0][0][i])+" "+str(xval[0][0][i])
+    #f.write(str(xval[0][0][i])+" "+str(xval[0][0][i]))
     i = i + 1
