@@ -6,6 +6,7 @@
 #include <vector>
 #include <ctime>
 #include <time.h>
+#include <algorithm>
 //#include <cstdio.h>
 const int bands = 64;
 const int n = 256;
@@ -38,6 +39,7 @@ int main()
     }
     input.close();
     input.open("output/fftWindows");
+
     while (window.isOpen()) {
         //while (!input.eof()) {
         std::clock_t start = std::clock();
@@ -47,13 +49,17 @@ int main()
             input >> val[i];
             //input.flush();
         }
-        for (i = 0; i < 43 * (n - 1); i++) {
-			history[n + i] = history[i];
-		}
+        //for (i = 0; i < 43 * (n - 1); i++) {
+		//	history[n + i] = history[i];
+		//}
+
 		for (i = 0; i < n; i++) {
 			history[i] = val[i];
 		}
-
+        std::rotate(history.begin(), history.end() - (n + 1), history.end());
+		//for (i = 0; i < 43*n; i++) {
+			//std::cout << history[i] << std::endl;// = val[i];
+		//}
         for (i = 0; i < bands; i++) {
             double sum=0;
             for (int j = 0; j < width; j++) {
@@ -65,7 +71,7 @@ int main()
         for (i = 0; i < bands; i++) {
             double height = subbands[i] *100;
             bars[i].setSize(sf::Vector2f(4*width, height));
-            bars[i].setPosition(i*(width*4 + 1), 1000 - height);\
+            bars[i].setPosition(i*(width*4 + 1), 1000 - height);
         }
         window.clear(sf::Color::Black);
         for (i = 0; i < bands; i++) {
