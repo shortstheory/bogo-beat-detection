@@ -11,17 +11,34 @@
 const int bands = 64;
 const int n = 256;
 const int width = n / bands;
+
+void createSubbands(std::vector<double> &val, std::vector<double> &subbands)
+{
+	int i, j;
+    for (i = 0; i < bands; i++) {
+        double sum=0;
+        for (j = 0; j < width; j++) {
+            sum+=val[j+i*width];
+        }
+        subbands[i] = sum / width;
+    //    std::cout << a << ' ' << subbands[i] << std::endl;
+    }
+}
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1280, 900), "FFT Visualiser");
     window.setVerticalSyncEnabled(true);
     sf::RectangleShape bars[n], t;
     int i;
+    int j;
     t.setSize(sf::Vector2f(200, 500));
     t.setPosition(500, 100);
     std::vector<double> val(n);
     std::vector<double> subbands(bands);
     std::vector<double> history(n*43);
+    std::vector<double> meanHistory(n);
+    std::vector<double> subbandsHistory(n);
     std::ifstream input("output/fftWindows");
 //    sf::Color barColor;
     for (i = 0; i < bands; i++) {
@@ -57,19 +74,27 @@ int main()
 			history[i] = val[i];
 		}
         std::rotate(history.begin(), history.end() - (n + 1), history.end());
+
+        for (i = 0; i < n; i++) {
+            meanHistory[i] = 0;
+            for (j  = 0; j < 43; j++) {
+                meanHistory[i] += history[i + j * n];
+	//			std::cout << i+j*n << ',' << history[i + j * n] << '+';
+            }
+    //        std::cout << std::endl;
+            meanHistory[i] /= 43;
+            //std::cout << meanHistory[i] << std::endl;
+        }
+        //std::cout << "done" << std::endl;
 		//for (i = 0; i < 43*n; i++) {
 			//std::cout << history[i] << std::endl;// = val[i];
 		//}
+        createSubbands(val, subbands);
+		createSubbands(meanHistory, subbandsHistory);
+
         for (i = 0; i < bands; i++) {
-            double sum=0;
-            for (int j = 0; j < width; j++) {
-                sum+=val[j+i*width];
-            }
-            subbands[i] = sum / width;
-            std::cout << a << ' ' << subbands[i] << std::endl;
-        }
-        for (i = 0; i < bands; i++) {
-            double height = subbands[i] *100;
+            double height = subbandsHistory[i] *100;
+            
             bars[i].setSize(sf::Vector2f(4*width, height));
             bars[i].setPosition(i*(width*4 + 1), 1000 - height);
         }
