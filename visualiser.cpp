@@ -29,7 +29,7 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(1280, 900), "FFT Visualiser");
     window.setVerticalSyncEnabled(true);
-    sf::RectangleShape bars[n], t;
+    sf::RectangleShape bars[n], t, historyBars[n];
     int i;
     int j;
     t.setSize(sf::Vector2f(200, 500));
@@ -43,12 +43,13 @@ int main()
 //    sf::Color barColor;
     for (i = 0; i < bands; i++) {
         bars[i].setFillColor(sf::Color(n - i * width, 0 + i * width, i*width));
+        historyBars[i].setFillColor(sf::Color(100,100,100, 170));
     }
     sf::Music music;
     if (!music.openFromFile("sounds/file2.wav")) {
         return -1;
     }
-    music.play();
+    //music.play();
     auto historyIt = history.begin();
     while (historyIt != history.end()) {
         *historyIt=0;
@@ -73,7 +74,7 @@ int main()
 		for (i = 0; i < n; i++) {
 			history[i] = val[i];
 		}
-        std::rotate(history.begin(), history.end() - (n + 1), history.end());
+        std::rotate(history.begin(), history.end() - (n), history.end());
 
         for (i = 0; i < n; i++) {
             meanHistory[i] = 0;
@@ -93,14 +94,18 @@ int main()
 		createSubbands(meanHistory, subbandsHistory);
 
         for (i = 0; i < bands; i++) {
-            double height = subbandsHistory[i] *100;
-            
+            double height = subbands[i] *100;
+            double historyHeight = subbandsHistory[i] * 100;
             bars[i].setSize(sf::Vector2f(4*width, height));
             bars[i].setPosition(i*(width*4 + 1), 1000 - height);
+
+            historyBars[i].setSize(sf::Vector2f(4*width, historyHeight));
+            historyBars[i].setPosition(i*(width*4 + 1), 1000 - historyHeight);
         }
         window.clear(sf::Color::Black);
         for (i = 0; i < bands; i++) {
              window.draw(bars[i]);
+             window.draw(historyBars[i]);
          }
          while (std::clock() - start < 0.021 * 1000000)
          {}
