@@ -46,17 +46,17 @@ int main()
         historyBars[i].setFillColor(sf::Color(100,100,100, 170));
     }
     sf::Music music;
-    if (!music.openFromFile("sounds/file2.wav")) {
+    if (!music.openFromFile("../sounds/file1.wav")) {
         return -1;
     }
-    //music.play();
+    music.play();
     auto historyIt = history.begin();
     while (historyIt != history.end()) {
         *historyIt=0;
         historyIt++;
     }
     input.close();
-    input.open("output/fftWindows");
+    input.open("../output/fftWindows");
 
     while (window.isOpen()) {
         //while (!input.eof()) {
