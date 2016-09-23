@@ -8,7 +8,7 @@
 #include <time.h>
 #include <algorithm>
 //#include <cstdio.h>
-const int bands = 64;
+const int bands = 32;
 const int n = 256;
 const int width = n / bands;
 
@@ -43,7 +43,7 @@ int main()
 //    sf::Color barColor;
     for (i = 0; i < bands; i++) {
         bars[i].setFillColor(sf::Color(n - i * width, 0 + i * width, i*width));
-        historyBars[i].setFillColor(sf::Color(100,100,100, 170));
+        historyBars[i].setFillColor(sf::Color(100,100,100,170));
     }
     sf::Music music;
     if (!music.openFromFile("../sounds/file1.wav")) {
@@ -65,15 +65,13 @@ int main()
         for (i = 0; i < n && !input.eof(); i++) {
             input >> a >> b;
             input >> val[i];
-            //input.flush();
         }
-        //for (i = 0; i < 43 * (n - 1); i++) {
-		//	history[n + i] = history[i];
-		//}
+        ///std::cout << a << std::endl;
 
-		for (i = 0; i < n; i++) {
-			history[i] = val[i];
-		}
+
+        for (i = 0; i < n; i++) {
+            history[i] = val[i];
+        }
         std::rotate(history.begin(), history.end() - (n), history.end());
 
         for (i = 0; i < n; i++) {
@@ -91,7 +89,11 @@ int main()
 			//std::cout << history[i] << std::endl;// = val[i];
 		//}
         createSubbands(val, subbands);
-		createSubbands(meanHistory, subbandsHistory);
+        createSubbands(meanHistory, subbandsHistory);
+        double variance = 0;
+        for (i = 0; i < bands; i++) {
+            std::cout << a << ' ' <<  i << ' ' << subbands[i] / subbandsHistory[i] << std::endl;
+        }
 
         for (i = 0; i < bands; i++) {
             double height = subbands[i] *100;
@@ -107,12 +109,9 @@ int main()
              window.draw(bars[i]);
              window.draw(historyBars[i]);
          }
-         while (std::clock() - start < 0.021 * 1000000)
-         {}
-             // window.draw(t);
+        // while (std::clock() - start < 0.021 * 1000000)
+         //{}
         window.display();
-            //usleep(0.02322*1000000);
-//}
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)

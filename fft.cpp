@@ -52,6 +52,9 @@ int main()
        for (j = 0; j < 256; j++) {
            double magnitude0 = log10(sqrt(outputCh0[j][0]*outputCh0[j][0] + outputCh0[j][1]*outputCh0[j][1]));
            double magnitude1 = log10(sqrt(outputCh1[j][0]*outputCh1[j][0] + outputCh1[j][1]*outputCh1[j][1]));
+//           double magnitude0 = outputCh0[j][0]*outputCh0[j][0] + outputCh0[j][1]*outputCh0[j][1];
+//           double magnitude1 = outputCh1[j][0]*outputCh1[j][0] + outputCh1[j][1]*outputCh1[j][1];
+
            fftValue[j] = sqrt(magnitude0 * magnitude0 + magnitude1 * magnitude1);
            fftValue[j] = (j == 0) ? 0 : fftValue[j];
            output << itCounter * 1024 / 44100.0 << ' ' << 44100 * j / n << ' ' << fftValue[j] << std::endl;
